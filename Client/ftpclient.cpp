@@ -112,7 +112,7 @@ int Client_Login(int sock)
     switch (reccode)
     {
     case 230:
-        printf("welcome %s! \n", user);
+        printf("----- welcome %s! -----\n", user);
         break;
 
     default:

@@ -27,10 +27,17 @@ int main()
         printf("password error\n");
         return -1;
     }
-    int linktype = 0;  //初始化主动连接
+    int linktype = 0; //初始化主动连接
     while (true)
     {
-        printf("link type : %d\n",linktype);
+        if (linktype == 0)
+        {
+            printf("== link type : PORT ==\n");
+        }
+        else
+        {
+            printf("== link type : PASV ==\n");
+        }
         char buf[MAX];
         memset(buf, 0, sizeof(char) * MAX);
         struct clientcmd cmd;
@@ -132,7 +139,8 @@ int main()
             {
                 Client_PASV(&linktype);
             }
-            else if(strcmp(cmd.code,"MKDI") ==0){
+            else if (strcmp(cmd.code, "MKDI") == 0)
+            {
                 Client_MKDIR(datasock);
                 close(datasock);
             }
