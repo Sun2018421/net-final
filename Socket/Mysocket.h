@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <sys/file.h>
 #define MAX 1024
 #define USER "us"
 #define SERVER_PORT 1319

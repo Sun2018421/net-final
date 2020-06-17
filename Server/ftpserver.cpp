@@ -78,6 +78,7 @@ void Server_PUT(int datasock, int sockctl, char *filename)
         return;
     }
 
+    flock(fd, LOCK_EX); //上互斥锁
     while (1)
     {
         char data[MAX];
@@ -93,6 +94,7 @@ void Server_PUT(int datasock, int sockctl, char *filename)
         }
         write(fd, data, s);
     }
+    flock(fd, LOCK_UN); //释放互斥锁
     close(fd);
 }
 void *handle(void *arg)
@@ -170,7 +172,8 @@ void *handle(void *arg)
             }
         }
     }
-    else{
+    else
+    {
         SendCode(clnt_sock, 430);
     }
     close(clnt_sock);
@@ -373,13 +376,15 @@ void Server_GET(int sockdata, int sockctl, char *filename)
         SendCode(sockctl, 550);
     }
     else
-    {
+    { //共享锁
+        flock(fd, LOCK_SH);
         SendCode(sockctl, 150);
         struct stat st;
         stat(name, &st);
         size_t size = st.st_size;
         sendfile(sockdata, fd, NULL, size);
         SendCode(sockctl, 226);
+        flock(fd, LOCK_UN); //释放锁
         close(fd);
     }
 }
