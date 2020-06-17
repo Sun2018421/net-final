@@ -132,6 +132,10 @@ int main()
             {
                 Client_PASV(&linktype);
             }
+            else if(strcmp(cmd.code,"MKDI") ==0){
+                Client_MKDIR(datasock);
+                close(datasock);
+            }
         }
     }
     close(client_socket);

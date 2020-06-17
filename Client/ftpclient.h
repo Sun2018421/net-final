@@ -19,4 +19,5 @@ int Client_PUT(int sock, char *filename);
 int Client_CD(int sock);
 int Client_DIR(int sock, int sockctl);
 int ClientPASV(int sockctl);
+int Client_MKDIR(int datasock);
 #endif

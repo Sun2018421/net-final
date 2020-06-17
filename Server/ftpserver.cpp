@@ -1,5 +1,18 @@
 #include "ftpserver.h"
 
+int Server_MKDIR(int datasock, char *filename)
+{
+    int stat = 0;
+    if (mkdir(filename, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == 0)
+    {
+        stat = 1;
+        send(datasock, &stat, sizeof(stat), 0);
+    }
+    else
+    {
+        send(datasock, &stat, sizeof(stat), 0);
+    }
+}
 int Server_PORT(int *mode)
 {
     *mode = 0;
@@ -82,7 +95,7 @@ void Server_PUT(int datasock, int sockctl, char *filename)
     }
     close(fd);
 }
-void * handle(void *arg)
+void *handle(void *arg)
 {
     pthread_detach(pthread_self());
 
@@ -94,69 +107,71 @@ void * handle(void *arg)
     if (1 == Server_Login(clnt_sock))
     {
         SendCode(clnt_sock, 230);
-    }
-    else
-    {
-        SendCode(clnt_sock, 430);
-        return NULL;
-    }
-    int linktype = 0; // 0 代表主动连接
-    char cmd[5];
-    char cmdarg[MAX];
-    while (true)
-    {
-        int code = Server_recv_cmd(clnt_sock, cmd, cmdarg);
-        if (code == 221)
-            break;
-        if (code == 200)
+        int linktype = 0; // 0 代表主动连接
+        char cmd[5];
+        char cmdarg[MAX];
+        while (true)
         {
-            int sock_data;
-            if (linktype == 0)
+            int code = Server_recv_cmd(clnt_sock, cmd, cmdarg);
+            if (code == 221)
+                break;
+            if (code == 200)
             {
-                sock_data = SeverPort(clnt_sock);
-            }
-            else
-            {
-                sock_data = ServerPASV(clnt_sock);
-            }
+                int sock_data;
+                if (linktype == 0)
+                {
+                    sock_data = SeverPort(clnt_sock);
+                }
+                else
+                {
+                    sock_data = ServerPASV(clnt_sock);
+                }
 
-            if (sock_data < 0)
-            {
+                if (sock_data < 0)
+                {
+                    close(sock_data);
+                    printf("open data socket failed\n");
+                    //          return;
+                }
+
+                if (strncmp(cmd, "PWD", 3) == 0)
+                {
+                    Server_PWD(sock_data);
+                }
+                else if (strncmp(cmd, "GET", 3) == 0)
+                {
+                    Server_GET(sock_data, clnt_sock, cmdarg);
+                }
+                else if (strncmp(cmd, "PUT", 3) == 0)
+                {
+                    Server_PUT(sock_data, clnt_sock, cmdarg);
+                }
+                else if (strncmp(cmd, "DIR", 3) == 0)
+                {
+                    Server_DIR(sock_data, clnt_sock);
+                }
+                else if (strncmp(cmd, "CD", 2) == 0)
+                {
+                    Server_CD(sock_data, cmdarg);
+                }
+                else if (strncmp(cmd, "PORT", 4) == 0)
+                {
+                    Server_PORT(&linktype);
+                }
+                else if (strncmp(cmd, "PASV", 4) == 0)
+                {
+                    Server_PASV(&linktype);
+                }
+                else if (strncmp(cmd, "MKDI", 4) == 0)
+                {
+                    Server_MKDIR(sock_data, cmdarg);
+                }
                 close(sock_data);
-                printf("open data socket failed\n");
-                //          return;
             }
-
-            if (strncmp(cmd, "PWD", 3) == 0)
-            {
-                Server_PWD(sock_data);
-            }
-            else if (strncmp(cmd, "GET", 3) == 0)
-            {
-                Server_GET(sock_data, clnt_sock, cmdarg);
-            }
-            else if (strncmp(cmd, "PUT", 3) == 0)
-            {
-                Server_PUT(sock_data, clnt_sock, cmdarg);
-            }
-            else if (strncmp(cmd, "DIR", 3) == 0)
-            {
-                Server_DIR(sock_data, clnt_sock);
-            }
-            else if (strncmp(cmd, "CD", 2) == 0)
-            {
-                Server_CD(sock_data, cmdarg);
-            }
-            else if (strncmp(cmd, "PORT", 4) == 0)
-            {
-                Server_PORT(&linktype);
-            }
-            else if (strncmp(cmd, "PASV", 4) == 0)
-            {
-                Server_PASV(&linktype);
-            }
-            close(sock_data);
         }
+    }
+    else{
+        SendCode(clnt_sock, 430);
     }
     close(clnt_sock);
 }
@@ -192,6 +207,7 @@ int Server_Login(int sock)
         pass[j++] = buf[i++];
     }
     int ret = Server_check(user, pass);
+    printf("%s %s\n", user, pass);
     return ret;
 }
 int Server_check(char *user, char *pass)
@@ -249,7 +265,6 @@ int Server_recv_cmd(int sock, char *cmd, char *arg)
         printf("recv cmd error\n");
         return -1;
     }
- 
 
     //
     char *pos = strtok(buf, " ");
@@ -271,13 +286,14 @@ int Server_recv_cmd(int sock, char *cmd, char *arg)
     }
     else if ((strncmp(cmd, "DIR", 3) == 0) || (strncmp(cmd, "GET", 3) == 0) ||
              (strncmp(cmd, "PWD", 3) == 0) || (strncmp(cmd, "CD", 2) == 0) ||
-             (strncmp(cmd, "PUT", 3) == 0) || (strncmp(cmd, "PORT", 4) == 0) || strncmp(cmd, "PASV", 4) == 0)
+             (strncmp(cmd, "PUT", 3) == 0) || (strncmp(cmd, "PORT", 4) == 0) || (strncmp(cmd, "PASV", 4) == 0) ||
+             (strncmp(cmd, "MKDI", 4) == 0))
     {
         code = 200;
     }
     else
         code = 502;
-    printf("receive :%s and code is %d the sock is %d\n", buf,code,sock);
+    printf("receive :%s and code is %d the sock is %d\n", buf, code, sock);
     SendCode(sock, code);
     return code;
 }
@@ -303,18 +319,18 @@ int SeverPort(int sock_ctl)
         //print_log()
         return -1;
     }
-    printf("the current client port id %d\n",pre_port);
+    printf("the current client port id %d\n", pre_port);
     return sock_data;
 }
 
 int ServerPASV(int sockctl)
 {
-     int listenfd;
+    int listenfd;
     // int sock_listen = CreateSocket("0.0.0.0", CLIENT_PORT); //创建一个数据连接，已经连接
     struct sockaddr_in servaddr;
     struct sockaddr_in listenaddr;
     socklen_t listernaddrLen;
-     listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = inet_addr("0.0.0.0");
@@ -342,7 +358,7 @@ int ServerPASV(int sockctl)
         return -1;
     }
     close(listenfd);
-    printf("the current port is %d\n",ack);
+    printf("the current port is %d\n", ack);
     return link_socket;
 }
 void Server_GET(int sockdata, int sockctl, char *filename)

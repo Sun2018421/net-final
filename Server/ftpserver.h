@@ -2,6 +2,7 @@
 #define _FTPSERVER_H__
 
 #include "../Socket/Mysocket.h"
+#include <sys/stat.h> 
 
 void *handle(void *arg);
 int Server_Login(int sock);
@@ -16,4 +17,5 @@ int Server_DIR(int sock,int sockctl);
 int Server_PORT(int *mode);
 int Server_PASV(int *mode);
 int ServerPASV(int sockctl);
+int Server_MKDIR(int datasock ,char *filename);
 #endif
