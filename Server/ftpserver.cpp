@@ -82,11 +82,12 @@ void Server_PUT(int datasock, int sockctl, char *filename)
     }
     close(fd);
 }
-void *handle(void *arg)
+void * handle(void *arg)
 {
     pthread_detach(pthread_self());
 
-    int clnt_sock = (long)arg;
+    //int clnt_sock = (long)arg;
+    int clnt_sock = *(int *)arg;
     // sayhello(clnt_sock); //问好
     SendCode(clnt_sock, 220); //连接成功处理相应码
 

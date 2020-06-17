@@ -25,7 +25,9 @@ int main(int agrc, char **argv)
             continue;
         }   
         pthread_t tid;
-        pthread_create(&tid , NULL ,handle,(void *)clnt_sock);
+        void * p = &clnt_sock;
+      //  pthread_create(&tid , NULL ,handle,(void *)clnt_sock);
+      pthread_create(&tid , NULL ,handle,p);
       //  handle((void *)clnt_sock);
     }
     close(server_socket);
