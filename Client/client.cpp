@@ -51,7 +51,7 @@ int main()
         }
         else if (ret == 2)
         {
-            printf("get <filename> -- 获取文件\nput <filename>-- 上传文件\npwd -- 显示当前文件路径\ndir -- 显示当前目录\ncd -- 切换目录\nPORT -- 切换主动连接模式\nPASV -- 切换被动连接模式\nquit -- 退出\n");
+            printf("get <filename> -- 获取文件\nput <filename>-- 上传文件\npwd -- 显示当前文件路径\ndir -- 显示当前目录\ncd -- 切换目录\nPORT -- 切换主动连接模式\nPASV -- 切换被动连接模式\nmkdi <directory> -- 创建目录\n--quit -- 退出\n");
             continue;
         }
         else if (ret == 0)

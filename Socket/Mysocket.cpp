@@ -9,8 +9,8 @@ int CreateSocket(const char *ip, const int port)
     if (server_socket < 0)
         return -1;
 
-    int op = 1 ;
-    setsockopt(server_socket , SOL_SOCKET , SO_REUSEADDR , &op,sizeof(op));
+    int op = 1;
+    setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &op, sizeof(op));
     struct sockaddr_in server_address;
     memset(&server_address, 0, sizeof(server_address));
     server_address.sin_family = AF_INET;
@@ -94,10 +94,11 @@ void PrintCodeMessage(int Code)
     switch (Code)
     {
     case 220:
-        printf("Connected, sending welcome message... \n220-Ftp-sxf Server version 0.1 beta\n220 hello \n");
+        // printf("Connected, sending welcome message... \n220-Ftp-sxf Server version 1.1 beta\n220 hello \n");
+        printf("Connected, sending welcome message... \n");
         break;
     case 221:
-        printf("successful quit\n");
+        printf("successful quit\n-----------------------\n");
         break;
     case 550:
         printf("No such File or directory.\n");
@@ -133,13 +134,12 @@ int recv_data(int sock, char *buf, int bufsize)
     else
         return len;
 }
-void trimstr(char* str,int n)   //去除字符串中的空白和换行
+void trimstr(char *str, int n) //去除字符串中的空白和换行
 {
-	int i=0;
-	for(i=0;i<n;i++)
-	{
-		if(isspace(str[i])||('\0'==str[i]))
-			str[i]=0;
-	}
+    int i = 0;
+    for (i = 0; i < n; i++)
+    {
+        if (isspace(str[i]) || ('\0' == str[i]))
+            str[i] = 0;
+    }
 }
-

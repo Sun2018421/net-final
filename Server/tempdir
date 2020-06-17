@@ -1,7 +1,7 @@
-total 144
+total 148
 -rw-r--r-- 1 sxf sxf    13 6月  17 12:03 1.txt
 drwxr-xr-x 2 sxf sxf  4096 6月  17 18:10 21
--rw-r--r-- 1 sxf sxf    12 6月  17 18:10 2.txt
+-rw-r--r-- 1 sxf sxf    12 6月  17 18:12 2.txt
 drwxr-xr-x 2 sxf sxf  4096 6月  17 12:04 333
 -rw-r--r-- 1 sxf sxf    13 6月  16 14:46 clientfile.txt
 drwxr-xr-x 2 sxf sxf  4096 6月  16 19:20 file
@@ -9,8 +9,9 @@ drwxr-xr-x 2 sxf sxf  4096 6月  16 19:20 file
 -rw-rw-r-- 1 sxf sxf  9452 6月  17 12:10 ftpserver.cpp
 -rw-rw-r-- 1 sxf sxf   613 6月  17 11:31 ftpserver.h
 -rw-r--r-- 1 sxf sxf   148 6月  17 07:39 makefile
--rwxr-xr-x 1 sxf sxf 79824 6月  17 16:24 server
+-rwxr-xr-x 1 sxf sxf 79824 6月  17 18:19 server
 -rw-r--r-- 1 sxf sxf   827 6月  17 10:57 server.cpp
--rw-r--r-- 1 sxf sxf     0 6月  17 18:10 tempdir
+-rw-r--r-- 1 sxf sxf     0 6月  17 18:26 tempdir
+drwxr-xr-x 2 sxf sxf  4096 6月  17 18:26 testfile
 -rw-r--r-- 1 sxf sxf    12 6月  16 13:13 testfile.txt
 -rw-r--r-- 1 sxf sxf    17 6月  16 22:51 us
