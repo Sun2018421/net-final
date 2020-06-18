@@ -210,7 +210,7 @@ int Server_Login(int sock)
         pass[j++] = buf[i++];
     }
     int ret = Server_check(user, pass);
-    printf("%s %s\n", user, pass);
+  //  printf("%s %s\n", user, pass);
     return ret;
 }
 int Server_check(char *user, char *pass)
@@ -322,7 +322,7 @@ int SeverPort(int sock_ctl)
         //print_log()
         return -1;
     }
-    printf("the current client port id %d\n", pre_port);
+    printf("the current client port id %d--\n", pre_port);
     return sock_data;
 }
 
@@ -361,12 +361,12 @@ int ServerPASV(int sockctl)
         return -1;
     }
     close(listenfd);
-    printf("the current port is %d\n", ack);
+    printf("the current port is %d--\n", ack);
     return link_socket;
 }
 void Server_GET(int sockdata, int sockctl, char *filename)
 {
-    printf("get filename %s\n", filename);
+  //  printf("get filename %s\n", filename);
     char name[260];
     memset(name, 0, sizeof(name));
     strcat(name, filename);

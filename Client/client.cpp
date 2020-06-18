@@ -2,7 +2,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <zconf.h>
+//#include <zconf.h>
 #include <cstring>
 #include <stdio.h>
 #include "ftpclient.h"
@@ -64,7 +64,7 @@ int main()
         }
 
         int code = RecvCode(client_socket);
-        printf("the code is %d\n", code);
+        printf("--the code is %d--\n", code);
         if (code == 221)
         {
             PrintCodeMessage(221);
@@ -127,7 +127,7 @@ int main()
                 {
                     SendCode(client_socket, 200);
                 }
-                printf("filename is %s\n", cmd.arg);
+          //      printf("filename is %s\n", cmd.arg);
                 close(datasock);
                 PrintCodeMessage(RecvCode(client_socket));
             }

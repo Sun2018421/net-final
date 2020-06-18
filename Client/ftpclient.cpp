@@ -116,7 +116,7 @@ int Client_Login(int sock)
         break;
 
     default:
-        printf("code is %d\n",reccode);
+        printf("--code is %d--\n",reccode);
         return -1;
         break;
     }
@@ -237,7 +237,7 @@ int ClientPort(int sock_ctl) //打开数据连接
         return -1;
     }
     close(listenfd);
-    printf("the current port is %d\n", ack);
+    printf("--the current port is %d--\n", ack);
     return link_socket;
 }
 
@@ -262,7 +262,7 @@ int ClientPASV(int sockctl)
         //print_log()
         return -1;
     }
-    printf("the current server port id %d\n", pre_port);
+    printf("--the current server port id %d--\n", pre_port);
     return sock_data;
 }
 int Client_PWD(int sock)
