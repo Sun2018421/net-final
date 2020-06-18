@@ -154,7 +154,7 @@ int Client_Read_cmd(char *buf, size_t size, struct clientcmd *cmd)
 {
     memset(cmd->code, 0, sizeof(cmd->code));
     memset(cmd->arg, 0, sizeof(cmd->arg));
-    printf("client> ");
+    printf(">> ");
     fflush(stdout);
     readLine(buf, size);
     char *arg = NULL;
