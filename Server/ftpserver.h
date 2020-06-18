@@ -5,6 +5,7 @@
 #include <sys/stat.h> 
 
 void handle(int arg);
+int Server_RM(int datasock, char * filename);
 int Server_Login(int sock);
 int Server_check(char *user,char *pass);
 int Server_recv_cmd(int sock,char *cmd , char*arg);

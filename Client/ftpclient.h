@@ -7,6 +7,7 @@ struct clientcmd
     char code[5];
     char arg[256];
 };
+int Client_RM(int datasock);
 int Client_PORT(int *mode);
 int Client_PASV(int *mode);
 int Client_Login(int sock);

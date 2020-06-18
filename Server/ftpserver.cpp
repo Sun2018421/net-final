@@ -1,5 +1,17 @@
 #include "ftpserver.h"
 
+int Server_RM(int datasock, char * filename){
+    int stat = 0;
+    if (remove(filename) == 0)
+    {
+        stat = 1;
+        send(datasock, &stat, sizeof(stat), 0);
+    }
+    else
+    {
+        send(datasock, &stat, sizeof(stat), 0);
+    }
+}
 int Server_MKDIR(int datasock, char *filename)
 {
     int stat = 0;
@@ -168,6 +180,9 @@ void handle(int arg)
                 {
                     Server_MKDIR(sock_data, cmdarg);
                 }
+                else if (strncmp(cmd,"RM",2) ==0){
+                    Server_RM(sock_data,cmdarg);
+                }
                 close(sock_data);
             }
         }
@@ -290,7 +305,7 @@ int Server_recv_cmd(int sock, char *cmd, char *arg)
     else if ((strncmp(cmd, "DIR", 3) == 0) || (strncmp(cmd, "GET", 3) == 0) ||
              (strncmp(cmd, "PWD", 3) == 0) || (strncmp(cmd, "CD", 2) == 0) ||
              (strncmp(cmd, "PUT", 3) == 0) || (strncmp(cmd, "PORT", 4) == 0) || (strncmp(cmd, "PASV", 4) == 0) ||
-             (strncmp(cmd, "MKDI", 4) == 0))
+             (strncmp(cmd, "MKDI", 4) == 0)||(strncmp(cmd,"RM",2)==0))
     {
         code = 200;
     }

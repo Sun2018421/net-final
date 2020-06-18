@@ -1,12 +1,28 @@
 #include "ftpclient.h"
+
+int Client_RM(int datasock)
+{
+    int stat = 1;
+    recv(datasock, &stat, sizeof(stat), 0);
+    if (stat == 1)
+    {
+        printf("remove file successfully\n");
+    }
+    else
+    {
+        printf("remove file failed\n");
+    }
+}
 int Client_MKDIR(int datasock)
 {
-    int stat =1;
+    int stat = 1;
     recv(datasock, &stat, sizeof(stat), 0);
-    if(stat == 1){
+    if (stat == 1)
+    {
         printf("created directory successfully\n");
     }
-    else{
+    else
+    {
         printf("created directory failed\n");
     }
 }
@@ -116,7 +132,7 @@ int Client_Login(int sock)
         break;
 
     default:
-        printf("--code is %d--\n",reccode);
+        printf("--code is %d--\n", reccode);
         return -1;
         break;
     }
@@ -144,7 +160,7 @@ int Client_Read_cmd(char *buf, size_t size, struct clientcmd *cmd)
     char *arg = NULL;
     arg = strtok(buf, " ");
     arg = strtok(NULL, " ");
-  //    printf("%s",buf);
+    //    printf("%s",buf);
     if (NULL != arg)
     {
         strncpy(cmd->arg, arg, strlen(arg));
@@ -185,6 +201,10 @@ int Client_Read_cmd(char *buf, size_t size, struct clientcmd *cmd)
     else if (strncmp(buf, "mkdi", 4) == 0)
     {
         strcpy(cmd->code, "MKDI");
+    }
+    else if (strncmp(buf, "rm", 2) == 0)
+    {
+        strcpy(cmd->code, "RM");
     }
     else if (strncmp(buf, "?", 1) == 0)
     {

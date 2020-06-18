@@ -51,7 +51,7 @@ int main()
         }
         else if (ret == 2)
         {
-            printf("get <filename> -- 获取文件\nput <filename>-- 上传文件\npwd -- 显示当前文件路径\ndir -- 显示当前目录\ncd -- 切换目录\nPORT -- 切换主动连接模式\nPASV -- 切换被动连接模式\nmkdi <directory> -- 创建目录\n--quit -- 退出\n");
+            printf("get <filename> -- 获取文件\nput <filename>-- 上传文件\npwd -- 显示当前文件路径\ndir -- 显示当前目录\ncd -- 切换目录\nPORT -- 切换主动连接模式\nPASV -- 切换被动连接模式\nmkdi <directory> -- 创建目录\nrm <filename> -- 删除文件\nquit -- 退出\n");
             continue;
         }
         else if (ret == 0)
@@ -127,21 +127,28 @@ int main()
                 {
                     SendCode(client_socket, 200);
                 }
-          //      printf("filename is %s\n", cmd.arg);
+                //      printf("filename is %s\n", cmd.arg);
                 close(datasock);
                 PrintCodeMessage(RecvCode(client_socket));
             }
             else if (strcmp(cmd.code, "PORT") == 0)
             {
                 Client_PORT(&linktype);
+                close(datasock);
             }
             else if (strcmp(cmd.code, "PASV") == 0)
             {
                 Client_PASV(&linktype);
+                close(datasock);
             }
             else if (strcmp(cmd.code, "MKDI") == 0)
             {
                 Client_MKDIR(datasock);
+                close(datasock);
+            }
+            else if (strcmp(cmd.code, "RM") == 0)
+            {
+                Client_RM(datasock);
                 close(datasock);
             }
         }
