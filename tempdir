@@ -1,5 +1,8 @@
-total 12
-drwxr-xr-x 2 sxf sxf 4096 6月  18 16:11 Client
-drwxr-xr-x 6 sxf sxf 4096 6月  18 16:15 Server
-drwxr-xr-x 2 sxf sxf 4096 6月  16 05:56 Socket
--rw-r--r-- 1 sxf sxf    0 6月  18 16:17 tempdir
+.
+..
+Client
+.git
+Server
+Socket
+tempdir
+.vscode

@@ -23,7 +23,7 @@ int Server_PASV(int *mode)
 }
 int Server_DIR(int sock, int sockctl)
 {
-    int ret = system("ls -l > tempdir");
+    int ret = system("ls -a > tempdir");
     if (ret < 0)
     {
         return -1;
