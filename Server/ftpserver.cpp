@@ -97,12 +97,12 @@ void Server_PUT(int datasock, int sockctl, char *filename)
     flock(fd, LOCK_UN); //释放互斥锁
     close(fd);
 }
-void *handle(void *arg)
+void handle(int arg)
 {
-    pthread_detach(pthread_self());
+    // pthread_detach(pthread_self());
 
     //int clnt_sock = (long)arg;
-    int clnt_sock = *(int *)arg;
+    int clnt_sock = arg;
     // sayhello(clnt_sock); //问好
     SendCode(clnt_sock, 220); //连接成功处理相应码
 
@@ -296,7 +296,7 @@ int Server_recv_cmd(int sock, char *cmd, char *arg)
     }
     else
         code = 502;
-    printf("receive :%s and code is %d the sock is %d\n", buf, code, sock);
+    printf("--pid : %d , receive :%s and code is %d the sock is %d\n",getpid() ,buf, code, sock);
     SendCode(sock, code);
     return code;
 }

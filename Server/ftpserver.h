@@ -4,7 +4,7 @@
 #include "../Socket/Mysocket.h"
 #include <sys/stat.h> 
 
-void *handle(void *arg);
+void handle(int arg);
 int Server_Login(int sock);
 int Server_check(char *user,char *pass);
 int Server_recv_cmd(int sock,char *cmd , char*arg);

@@ -24,11 +24,17 @@ int main(int agrc, char **argv)
             printf("accept socket failed\n");
             continue;
         }   
-        pthread_t tid;
-        void * p = &clnt_sock;
+     //   pthread_t tid;
+      //  void * p = &clnt_sock;
       //  pthread_create(&tid , NULL ,handle,(void *)clnt_sock);
-      pthread_create(&tid , NULL ,handle,p);
+     // pthread_create(&tid , NULL ,handle,p);
       //  handle((void *)clnt_sock);
+      pid_t child ;
+      child = fork();
+      if(child == 0){
+          handle(clnt_sock);
+          break;
+      }
     }
     close(server_socket);
 
