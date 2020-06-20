@@ -113,7 +113,7 @@ int Client_GET(int datasock, char *filename)
     close(fd);
     return 0;
 }
-int Client_Login(int sock)
+int Client_Login(int sock) //登陆功能
 {
     struct clientcmd cmd;
     char user[256];
@@ -178,11 +178,11 @@ int Client_Read_cmd(char *buf, size_t size, struct clientcmd *cmd)
         strncpy(cmd->arg, arg, strlen(arg));
     }
 
-    if (strncmp(buf, "dir", 2) == 0)
+    if (strncmp(buf, "dir", 2) == 0)  //通过读入后规范code码
     {
         strcpy(cmd->code, "DIR");
     }
-    else if (strncmp(buf, "get", 3) == 0)
+    else if (strncmp(buf, "get", 3) == 0) 
     {
         strcpy(cmd->code, "GET");
     }
@@ -238,7 +238,7 @@ int Client_Read_cmd(char *buf, size_t size, struct clientcmd *cmd)
     return 0;
 }
 
-int ClientPort(int sock_ctl) //打开数据连接
+int ClientPort(int sock_ctl) //打开数据连接   
 {
     int listenfd;
     // int sock_listen = CreateSocket("0.0.0.0", CLIENT_PORT); //创建一个数据连接，已经连接
@@ -277,7 +277,7 @@ int ClientPort(int sock_ctl) //打开数据连接
     return link_socket;
 }
 
-int ClientPASV(int sockctl)
+int ClientPASV(int sockctl)  //被动模式完成端口连接
 {
     int pre_port;
     if (recv(sockctl, &pre_port, sizeof(pre_port), 0) < 0)

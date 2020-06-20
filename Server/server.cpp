@@ -16,7 +16,7 @@ int main(int agrc, char **argv)
         printf("create socket failed\n");
         exit(-1);
     }
-    while (1)
+    while (1)  //通过fork来完成多客户端访问
     {
         int clnt_sock = AcceptSocket(server_socket);
         if (clnt_sock < 0)

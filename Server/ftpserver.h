@@ -5,7 +5,7 @@
 #include <sys/stat.h> 
 
 void handle(int arg);
-int Server_CAT(int datasock,char * filename);
+int Server_CAT(int datasock,char * filename); //Server与Client对应功能
 int Server_RM(int datasock, char * filename);
 int Server_Login(int sock);
 int Server_check(char *user,char *pass);

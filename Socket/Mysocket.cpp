@@ -1,6 +1,6 @@
 #include "Mysocket.h"
 
-int CreateSocket(const char *ip, const int port)
+int CreateSocket(const char *ip, const int port)  //封装创建socket端口
 {
     if ((NULL == ip) || port < 0)
         return -1;
@@ -31,7 +31,7 @@ int CreateSocket(const char *ip, const int port)
     return server_socket;
 }
 
-int AcceptSocket(int server_socket)
+int AcceptSocket(int server_socket) //接受socket
 {
     struct sockaddr_in link;
     socklen_t link_size = sizeof(link);
@@ -44,7 +44,7 @@ int AcceptSocket(int server_socket)
     return link_socket;
 }
 
-int ConnectSocket(const char *ip, const int port)
+int ConnectSocket(const char *ip, const int port) //连接socket
 {
     if ((NULL == ip) || port < 0)
         return -1;
@@ -67,7 +67,7 @@ int ConnectSocket(const char *ip, const int port)
     return client_socket;
 }
 
-int SendCode(int sock, int code)
+int SendCode(int sock, int code) //发送响应码
 {
     int sendcode = htonl(code);
     //int sendcode = code;
@@ -78,7 +78,7 @@ int SendCode(int sock, int code)
     return 1;
 }
 
-int RecvCode(int sock)
+int RecvCode(int sock) //接受响应码
 {
     int recvcode = 0;
     if (recv(sock, &recvcode, sizeof(recvcode), 0) < 0)
@@ -89,7 +89,7 @@ int RecvCode(int sock)
     return ntohl(recvcode);
 }
 
-void PrintCodeMessage(int Code)
+void PrintCodeMessage(int Code) //根据响应码打印信息
 {
     switch (Code)
     {
@@ -114,7 +114,7 @@ void PrintCodeMessage(int Code)
     }
 }
 
-int readLine(char *buf, int buffersize)
+int readLine(char *buf, int buffersize) //读一行cmd
 {
     memset(buf, 0, buffersize);
     if (NULL != fgets(buf, buffersize, stdin))
@@ -125,7 +125,7 @@ int readLine(char *buf, int buffersize)
     }
 }
 
-int recv_data(int sock, char *buf, int bufsize)
+int recv_data(int sock, char *buf, int bufsize) //接受数据
 {
     memset(buf, 0, bufsize);
     int len = recv(sock, buf, bufsize, 0);

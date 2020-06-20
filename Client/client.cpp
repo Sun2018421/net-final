@@ -43,7 +43,7 @@ int main()
         struct clientcmd cmd;
         memset(&cmd, 0, sizeof(cmd)); //初始化工作
 
-        int ret = Client_Read_cmd(buf, sizeof(buf), &cmd); //从cmd中读取指令
+        int ret = Client_Read_cmd(buf, sizeof(buf), &cmd); //从cmd中读取指令，并进行判断操作
         if (ret < 0)
         {
             printf("Invalid Command,please use ? for help\n");
@@ -63,7 +63,7 @@ int main()
             }
         }
 
-        int code = RecvCode(client_socket);
+        int code = RecvCode(client_socket); //接受返回码
         printf("--the code is %d--\n", code);
         if (code == 221)
         {
@@ -79,17 +79,17 @@ int main()
         {
             int datasock; //默认是主动连接
             if (linktype == 0)
-                datasock = ClientPort(client_socket);
+                datasock = ClientPort(client_socket); //切换PORT
             else
             {
-                datasock = ClientPASV(client_socket);
+                datasock = ClientPASV(client_socket); //切换PASV模式
             }
 
             if (datasock < 0)
             {
                 printf("open data socket failed\n");
             }
-            if (strcmp(cmd.code, "DIR") == 0)
+            if (strcmp(cmd.code, "DIR") == 0) //完成dir功能
             {
                 Client_DIR(datasock, client_socket);
                 close(datasock);
