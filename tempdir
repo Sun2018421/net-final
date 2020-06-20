@@ -2,6 +2,7 @@
 ..
 Client
 .git
+README.md
 Server
 Socket
 tempdir

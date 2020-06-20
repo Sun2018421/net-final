@@ -1,6 +1,22 @@
 #include "ftpserver.h"
 
-int Server_RM(int datasock, char * filename){
+int Server_CAT(int datasock, char *filename)
+{
+    char name[260];
+    memset(name, 0, sizeof(name));
+    strcat(name, filename);
+    int fd = open(name, O_RDONLY);
+    //共享锁
+    flock(fd, LOCK_SH);
+    struct stat st;
+    stat(name, &st);
+    size_t size = st.st_size;
+    sendfile(datasock, fd, NULL, size);
+    flock(fd, LOCK_UN); //释放锁
+    close(fd);
+}
+int Server_RM(int datasock, char *filename)
+{
     int stat = 0;
     if (remove(filename) == 0)
     {
@@ -180,8 +196,13 @@ void handle(int arg)
                 {
                     Server_MKDIR(sock_data, cmdarg);
                 }
-                else if (strncmp(cmd,"RM",2) ==0){
-                    Server_RM(sock_data,cmdarg);
+                else if (strncmp(cmd, "RM", 2) == 0)
+                {
+                    Server_RM(sock_data, cmdarg);
+                }
+                else if (strncmp(cmd, "CAT", 3) == 0)
+                {
+                    Server_CAT(sock_data, cmdarg);
                 }
                 close(sock_data);
             }
@@ -225,7 +246,7 @@ int Server_Login(int sock)
         pass[j++] = buf[i++];
     }
     int ret = Server_check(user, pass);
-  //  printf("%s %s\n", user, pass);
+    //  printf("%s %s\n", user, pass);
     return ret;
 }
 int Server_check(char *user, char *pass)
@@ -305,13 +326,13 @@ int Server_recv_cmd(int sock, char *cmd, char *arg)
     else if ((strncmp(cmd, "DIR", 3) == 0) || (strncmp(cmd, "GET", 3) == 0) ||
              (strncmp(cmd, "PWD", 3) == 0) || (strncmp(cmd, "CD", 2) == 0) ||
              (strncmp(cmd, "PUT", 3) == 0) || (strncmp(cmd, "PORT", 4) == 0) || (strncmp(cmd, "PASV", 4) == 0) ||
-             (strncmp(cmd, "MKDI", 4) == 0)||(strncmp(cmd,"RM",2)==0))
+             (strncmp(cmd, "MKDI", 4) == 0) || (strncmp(cmd, "RM", 2) == 0) || (strncmp(cmd, "CAT", 3) == 0))
     {
         code = 200;
     }
     else
         code = 502;
-    printf("--pid : %d , receive :%s and code is %d the sock is %d\n",getpid() ,buf, code, sock);
+    printf("--pid : %d , receive :%s and code is %d the sock is %d\n", getpid(), buf, code, sock);
     SendCode(sock, code);
     return code;
 }
@@ -381,7 +402,7 @@ int ServerPASV(int sockctl)
 }
 void Server_GET(int sockdata, int sockctl, char *filename)
 {
-  //  printf("get filename %s\n", filename);
+    //  printf("get filename %s\n", filename);
     char name[260];
     memset(name, 0, sizeof(name));
     strcat(name, filename);

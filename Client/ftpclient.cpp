@@ -1,5 +1,17 @@
 #include "ftpclient.h"
 
+int Client_CAT(int datasock)
+{
+    char buf[MAX];
+    printf("--------------------\n");
+    while (recv(datasock, buf, sizeof(char) * MAX, 0) > 0)
+    {
+        printf("%s", buf);
+        memset(buf, 0, sizeof(char) * MAX);
+    }
+
+    printf("--------------------\n");
+}
 int Client_RM(int datasock)
 {
     int stat = 1;
@@ -206,6 +218,10 @@ int Client_Read_cmd(char *buf, size_t size, struct clientcmd *cmd)
     {
         strcpy(cmd->code, "RM");
     }
+    else if (strncmp(buf, "cat", 3) == 0)
+    {
+        strcpy(cmd->code, "CAT");
+    }
     else if (strncmp(buf, "?", 1) == 0)
     {
         return 2;
@@ -290,4 +306,5 @@ int Client_PWD(int sock)
     char buf[MAX];
     recv_data(sock, buf, sizeof(char) * MAX);
     printf("%s\n", buf);
+    fflush(stdout);
 }

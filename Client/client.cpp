@@ -51,7 +51,7 @@ int main()
         }
         else if (ret == 2)
         {
-            printf("get <filename> -- 获取文件\nput <filename>-- 上传文件\npwd -- 显示当前文件路径\ndir -- 显示当前目录\ncd -- 切换目录\nPORT -- 切换主动连接模式\nPASV -- 切换被动连接模式\nmkdi <directory> -- 创建目录\nrm <filename> -- 删除文件\nquit -- 退出\n");
+            printf("get <filename> -- 获取文件\nput <filename>-- 上传文件\ncat <filename>-- 显示文件内容\npwd -- 显示当前文件路径\ndir -- 显示当前目录\ncd -- 切换目录\nPORT -- 切换主动连接模式\nPASV -- 切换被动连接模式\nmkdi <directory> -- 创建目录\nrm <filename> -- 删除文件\nquit -- 退出\n");
             continue;
         }
         else if (ret == 0)
@@ -149,6 +149,10 @@ int main()
             else if (strcmp(cmd.code, "RM") == 0)
             {
                 Client_RM(datasock);
+                close(datasock);
+            }
+            else if (strcmp(cmd.code,"CAT") == 0){
+                Client_CAT(datasock);
                 close(datasock);
             }
         }
